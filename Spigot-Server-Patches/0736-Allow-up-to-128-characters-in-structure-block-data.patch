@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SamB440 <sam@islandearth.net>
+Date: Thu, 20 May 2021 20:18:19 +0100
+Subject: [PATCH] Allow up to 128 characters in structure block data
+
+
+diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java
+index 2e19ac6b4e27c5d1bbefd5e99f8298650919d917..048d1f13036f5517355325bbeaf553a8ca53561d 100644
+--- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java
++++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java
+@@ -43,7 +43,7 @@ public class PacketPlayInStruct implements Packet<PacketListenerPlayIn> {
+         this.f = new BlockPosition(MathHelper.clamp(packetdataserializer.readByte(), 0, 48), MathHelper.clamp(packetdataserializer.readByte(), 0, 48), MathHelper.clamp(packetdataserializer.readByte(), 0, 48));
+         this.g = (EnumBlockMirror) packetdataserializer.a(EnumBlockMirror.class);
+         this.h = (EnumBlockRotation) packetdataserializer.a(EnumBlockRotation.class);
+-        this.i = packetdataserializer.e(12);
++        this.i = packetdataserializer.e(128); // Paper - increase max text length to 128 characters
+         this.m = MathHelper.a(packetdataserializer.readFloat(), 0.0F, 1.0F);
+         this.n = packetdataserializer.j();
+         byte b0 = packetdataserializer.readByte();
