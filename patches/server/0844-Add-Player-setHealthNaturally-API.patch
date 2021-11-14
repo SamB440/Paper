@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SamB440 <sam@islandearth.net>
+Date: Sun, 14 Nov 2021 20:26:43 +0000
+Subject: [PATCH] Add Player setHealthNaturally API
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 465dab588e770bf4d1e645e1f451a066f388014a..3ab4fcec5a49f58f98856d2c92812145ed79911b 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -1265,7 +1265,13 @@ public abstract class LivingEntity extends Entity {
+         return (Float) this.entityData.get(LivingEntity.DATA_HEALTH_ID);
+     }
+ 
++    // Paper start
+     public void setHealth(float health) {
++        this.setHealth(health, false);
++    }
++    // Paper end
++
++    public void setHealth(float health, boolean sendHealth) { // Paper - add sendHealth
+         // Paper start
+         if (Float.isNaN(health)) { health = getMaxHealth(); if (this.valid) {
+             System.err.println("[NAN-HEALTH] " + getScoreboardName() + " had NaN health set");
+@@ -1282,7 +1288,7 @@ public abstract class LivingEntity extends Entity {
+                 player.setRealHealth(health);
+             }
+ 
+-            player.updateScaledHealth(false);
++            player.updateScaledHealth(sendHealth); // Paper - use sendHealth
+             return;
+         }
+         // CraftBukkit end
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 4ff4143f3a7cd89ef92f4b8882fa3e5addfe0f06..35c1086cfd2d6fcb03aba245bc15f72eff1731ef 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -1982,6 +1982,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return this.health;
+     }
+ 
++    // Paper start
++    @Override
++    public void setHealthNaturally(double health) {
++        this.getHandle().setHealth((float) health, true);
++    }
++    // Paper end
++
+     public void setRealHealth(double health) {
+         if (Double.isNaN(health)) {return;} // Paper
+         this.health = health;

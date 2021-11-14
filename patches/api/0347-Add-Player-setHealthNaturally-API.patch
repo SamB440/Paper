@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SamB440 <sam@islandearth.net>
+Date: Sun, 14 Nov 2021 20:26:18 +0000
+Subject: [PATCH] Add Player setHealthNaturally API
+
+
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 9a6e410206852029f1fea0c4409352d5743dcf64..2446e7a3909aca49679e2379555593679d29a84e 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -1558,6 +1558,19 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     public double getHealthScale();
+ 
++    // Paper start
++    /**
++     * Sets the player's health from 0 to {@link #getMaxHealth()}, where 0 is
++     * dead.
++     *
++     * This method is different to {@link #setHealth(double)} in that
++     * the health is set "naturally", so that the heart animation
++     * will be shown to the player.
++     * @param health New health represented from 0 to max
++     */
++    public void setHealthNaturally(double health);
++    // Paper end
++
+     /**
+      * Gets the entity which is followed by the camera when in
+      * {@link GameMode#SPECTATOR}.
